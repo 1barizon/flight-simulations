@@ -87,20 +87,21 @@ print("="*60)
 print(f"Apogee:              {tf.apogee:.1f} m (ASL)")
 print(f"Max speed:           {tf.max_speed:.1f} m/s (Mach {tf.max_speed/340:.2f})")
 print(f"Max Mach:            {tf.max_mach_number:.3f}")
-print(f"Rail departure V:    {tf.rail_departure_velocity:.1f} m/s")
-print(f"Burn time:           {tf.burn_out_time:.2f} s")
-print(f"Time to apogee:      {tf.time_to_apogee:.2f} s")
+if hasattr(tf, 'rail_departure_velocity'):
+    print(f"Rail departure V:    {tf.rail_departure_velocity:.1f} m/s")
+if hasattr(tf, 'burn_out_time'):
+    print(f"Burn time:           {tf.burn_out_time:.2f} s")
+if hasattr(tf, 'time_to_apogee'):
+    print(f"Time to apogee:      {tf.time_to_apogee:.2f} s")
 
 # Save summary as JSON
 summary = {
     "apogee": float(tf.apogee),
     "max_speed": float(tf.max_speed),
     "max_mach": float(tf.max_mach_number),
-    "rail_departure_velocity": float(tf.rail_departure_velocity),
-    "burn_out_time": float(tf.burn_out_time),
-    "time_to_apogee": float(tf.time_to_apogee),
     "simulation_time_s": elapsed,
     "impact_time": float(df['Time'].iloc[-1]),
+    "impact_altitude": float(df['Z'].iloc[-1]),
 }
 with open("flight_summary.json", "w") as f:
     json.dump(summary, f, indent=2)
